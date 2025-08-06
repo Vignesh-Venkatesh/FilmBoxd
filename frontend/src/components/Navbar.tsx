@@ -1,18 +1,18 @@
 export default function Navbar() {
   return (
-    <div className="p-8 font-google font-bold flex justify-between">
+    <div className="p-8 font-google font-bold flex justify-between bg-base-300">
       <div className="text-3xl">
         <h1>FilmBoxd</h1>
       </div>
 
       <div className="flex gap-10">
-        <div className="flex items-center">
+        <div className="flex items-end">
           <button className="btn btn-soft">Log In</button>
           <div className="divider divider-horizontal"></div>
           <button className="btn btn-soft">Sign Up</button>
         </div>
         {/* theme controller */}
-        <div>
+        <div className="flex items-center">
           <label className="swap swap-rotate">
             {/* this hidden checkbox controls the state */}
             <input type="checkbox" className="theme-controller" value="light" />
