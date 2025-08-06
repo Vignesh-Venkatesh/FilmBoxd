@@ -1,7 +1,11 @@
 import axios from "axios";
+import {
+  getMovieById as dbGetMovieById,
+  insertMovie,
+} from "../db/movieDBUtils";
+import type { Movie } from "../types";
 
 const TMDB_API_KEY = Bun.env.TMDB_API_KEY;
-
 const BASE_URL = "https://api.themoviedb.org/3";
 
 // function to get popular movies this week
@@ -44,22 +48,29 @@ export async function getNowPlayingMovies(page: number = 1) {
 
 // function to get movie by id
 export async function getMovieById(movie_id: string) {
-  const url = `${BASE_URL}/movie/${movie_id}`;
-
   try {
-    // if fetch is successful
+    // checking if movie exists in local DB
+    const movieIdNum = parseInt(movie_id, 10);
+    const movieFromDb: Movie | null = await dbGetMovieById(movieIdNum);
 
-    // NOTE: ADD DB LOOKUP FIRST
+    if (movieFromDb) {
+      return { msg: movieFromDb, status: 200 };
+    }
 
-    const { data } = await axios.get(url, {
+    // if movie is not in DB, we fetch from TMDB
+    const url = `${BASE_URL}/movie/${movie_id}`;
+    const { data } = await axios.get<Movie>(url, {
       headers: {
         accept: "application/json",
         Authorization: `Bearer ${TMDB_API_KEY}`,
       },
     });
+
+    // inserting into DB for caching
+    await insertMovie(data);
+
     return { msg: data, status: 200 };
   } catch (error) {
-    //   if fetch failed
     return {
       error: `Failed to fetch movie_id: ${movie_id} details.`,
       status: 400,

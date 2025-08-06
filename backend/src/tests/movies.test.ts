@@ -63,7 +63,7 @@ test("GET /movies/cast/:id returns 400", async () => {
 
 // based on movie id
 test("GET /movies/:id returns 200", async () => {
-  const testId = "550"; // TMDB ID for "Fight Club"
+  const testId = "27205"; // inception
   const res = await app.request(`/movies/${testId}`);
   const json = await res.json();
 

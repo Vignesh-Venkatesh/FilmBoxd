@@ -7,7 +7,7 @@ interface HomeSideBarProps {
 
 export default function HomeSideBar({ URL }: HomeSideBarProps) {
   return (
-    <div className="mt-6 w-[230px]">
+    <div className="w-[230px]">
       <DevPicks URL={URL} />
       <PopularReviewers />
     </div>
