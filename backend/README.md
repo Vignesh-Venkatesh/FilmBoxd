@@ -9,7 +9,8 @@ CREATE TABLE users (
   password_hash TEXT NOT NULL,
   avatar_url TEXT,
   bio TEXT,
-  created_at TIMESTAMP DEFAULT now()
+  created_at TIMESTAMP DEFAULT now(),
+  dark_mode BOOLEAN DEFAULT true
 );
 ```
 

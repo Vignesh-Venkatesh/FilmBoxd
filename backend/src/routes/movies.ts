@@ -5,9 +5,17 @@ import {
   getMovieById,
   getRecommendation,
   getCast,
+  getSearchedMovie,
 } from "../lib/tmdb";
 
 export const moviesRoutes = new Hono();
+
+// GET /movies/search
+moviesRoutes.get("/search", async (c) => {
+  const movie = c.req.query("movie");
+  const { msg, error, status } = await getSearchedMovie(movie);
+  return c.json(error ? { error, status } : { msg, status }, status);
+});
 
 // GET /movies/popular
 moviesRoutes.get("/popular", async (c) => {

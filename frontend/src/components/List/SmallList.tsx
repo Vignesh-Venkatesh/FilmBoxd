@@ -17,6 +17,7 @@ export default function SmallList({ data, columns = 12 }: SmallListProps) {
       {data.map((movie) => (
         <SmallPoster
           key={movie.id}
+          movie_id={movie.id}
           poster_path={movie.poster_path}
           movie_title={movie.title}
           release_date={movie.release_date}

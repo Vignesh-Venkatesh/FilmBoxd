@@ -17,6 +17,7 @@ export default function LargeList({ data, columns = 4 }: LargeListProps) {
       {data.map((movie) => (
         <LargePoster
           key={movie.id}
+          movie_id={movie.id}
           poster_path={movie.poster_path}
           movie_title={movie.title}
           release_date={movie.release_date}
