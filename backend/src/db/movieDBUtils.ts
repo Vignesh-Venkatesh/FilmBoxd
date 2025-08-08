@@ -1,6 +1,12 @@
 import { query } from "./db";
 import type { Movie } from "../types";
 
+// getting a random movie from the database
+export async function getRandomMovie(): Promise<Movie | null> {
+  const res = await query("SELECT * FROM movies ORDER BY RANDOM() LIMIT 1");
+  return res.rows[0] || null;
+}
+
 // getting a movie by its TMDB id
 export async function getMovieById(id: number): Promise<Movie | null> {
   const res = await query("SELECT * FROM movies WHERE id = $1", [id]);

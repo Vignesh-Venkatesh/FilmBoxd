@@ -7,8 +7,15 @@ import {
   getCast,
   getSearchedMovie,
 } from "../lib/tmdb";
+import { getRandomMovie } from "../db/movieDBUtils";
 
 export const moviesRoutes = new Hono();
+
+// GET /movies/random
+moviesRoutes.get("/random", async (c) => {
+  const movie = await getRandomMovie();
+  return c.json({ msg: movie, status: 200 });
+});
 
 // GET /movies/search
 moviesRoutes.get("/search", async (c) => {
