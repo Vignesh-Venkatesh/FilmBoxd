@@ -4,7 +4,9 @@ import { auth } from "./lib/auth"; // path to your auth file
 import { cors } from "hono/cors";
 
 import { logger } from "hono/logger";
+
 import { moviesRoutes } from "./routes/movies";
+import { usersRoutes } from "./routes/users";
 
 const app = new Hono();
 
@@ -26,6 +28,7 @@ app.on(["POST", "GET"], "/api/auth/*", (c) => {
 
 // Mounting routes
 app.route("/api/movies", moviesRoutes);
+app.route("/api/user", usersRoutes);
 
 export default {
   port: Bun.env.PORT,

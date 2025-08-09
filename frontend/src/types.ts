@@ -16,3 +16,13 @@ export interface User {
   updatedAt: Date;
   image?: string | null;
 }
+
+export interface UserDB {
+  id: string;
+  email: string;
+  emailVerified: boolean;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+  image?: string | null;
+}

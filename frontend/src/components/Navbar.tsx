@@ -70,7 +70,7 @@ export default function Navbar() {
             <div className="dropdown dropdown-hover dropdown-end">
               <div tabIndex={0} role="button" className="cursor-pointer">
                 {user.image ? (
-                  <div className="avatar w-10 h-10 rounded-full overflow-hidden border-2 border-accent">
+                  <div className="avatar w-10 h-10 rounded-full overflow-hidden">
                     <img src={user.image} alt="User Avatar" />
                   </div>
                 ) : (
@@ -88,7 +88,7 @@ export default function Navbar() {
                 className="dropdown-content menu bg-base-200 rounded-box z-10 w-32 p-2 shadow-md"
               >
                 <li>
-                  <Link to="/profile">
+                  <Link to={`/user/${user.name}`}>
                     <div className="p-1">Profile</div>
                   </Link>
                 </li>
