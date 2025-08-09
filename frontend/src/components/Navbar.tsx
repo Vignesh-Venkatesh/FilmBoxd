@@ -27,7 +27,6 @@ export default function Navbar() {
   const handleSignOut = async () => {
     await authClient.signOut();
     setUser(null);
-    navigate("/");
   };
 
   return (
@@ -90,6 +89,11 @@ export default function Navbar() {
                 <li>
                   <Link to={`/user/${user.name}`}>
                     <div className="p-1">Profile</div>
+                  </Link>
+                </li>
+                <li>
+                  <Link to={`/user/${user.name}/settings`}>
+                    <div className="p-1">Settings</div>
                   </Link>
                 </li>
                 <li>

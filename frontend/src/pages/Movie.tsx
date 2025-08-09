@@ -8,7 +8,7 @@ import LoadingMovie from "../components/Loading/LoadingMovie";
 import type { Movie } from "../types";
 import { isFutureDate } from "../config/utils";
 
-const URL = "http://localhost:5000/api";
+const URL: string = import.meta.env.VITE_API_URL;
 
 export default function Movie() {
   const { id } = useParams();

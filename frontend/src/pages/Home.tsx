@@ -5,7 +5,7 @@ import PopularMovies from "../components/PopularMovies";
 import HomeSideBar from "../components/HomeSideBar";
 import PopularReviews from "../components/Reviews/PopularReviews";
 
-const URL: string = "http://localhost:5000/api";
+const URL: string = import.meta.env.VITE_API_URL;
 
 export default function Home() {
   return (

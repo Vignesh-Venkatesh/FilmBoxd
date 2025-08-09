@@ -35,7 +35,7 @@ export default function NowPlayingMovies({ URL }: NowPlayingMoviesProps) {
 
   return (
     <div>
-      <Title title="movies playing this week" />
+      <Title title="films playing this week" />
       {loading && (
         <LoadingList
           quantity={12}

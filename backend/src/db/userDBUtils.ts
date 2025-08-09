@@ -228,3 +228,19 @@ export async function removeFavorite(userId: string, tmdbId: string) {
   );
   return res.rows[0] || null;
 }
+
+// ================= MISC =================
+
+// get recent users
+export async function getRecentUsers() {
+  const res = await query(
+    `
+    SELECT name, image, "createdAt"
+    FROM "user"
+    ORDER BY "createdAt" DESC
+    LIMIT 5
+  `
+  );
+
+  return res.rows || null;
+}

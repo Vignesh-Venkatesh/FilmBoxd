@@ -6,7 +6,7 @@ import type { UserDB } from "../../types";
 import Navbar from "../Navbar";
 import LoadingUserInfo from "../Loading/LoadingUserInfo";
 
-const URL = "http://localhost:5000/api";
+const URL: string = `${import.meta.env.VITE_API_URL}`;
 
 export default function UserInfo() {
   const { username } = useParams();
@@ -95,7 +95,6 @@ export default function UserInfo() {
   if (loading) {
     return (
       <div>
-        <Navbar />
         <LoadingUserInfo />
       </div>
     );
@@ -112,8 +111,7 @@ export default function UserInfo() {
 
   return (
     <div>
-      <Navbar />
-      <div className="w-[950px] mx-auto translate-y-10 font-google">
+      <div className="mx-auto font-google">
         {user && (
           <div className="flex w-full justify-between items-center">
             {/* left side - avaatar and user info */}

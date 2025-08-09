@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 
 import LoadingCast from "../Loading/LoadingCast";
 
+const URL: string = import.meta.env.VITE_API_URL;
+
 export default function CastList() {
   const { id } = useParams();
   const [cast, setCast] = useState<any[]>([]);
@@ -14,7 +16,7 @@ export default function CastList() {
 
     async function fetchCast() {
       try {
-        const res = await fetch(`http://localhost:5000/api/movies/cast/${id}`);
+        const res = await fetch(`${URL}/movies/cast/${id}`);
         const json = await res.json();
 
         if (!res.ok) throw new Error(json.error || "Unknown error");

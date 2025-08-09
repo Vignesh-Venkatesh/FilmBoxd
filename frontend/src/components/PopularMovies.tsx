@@ -35,7 +35,7 @@ export default function PopularMovies({ URL }: PopularMoviesProps) {
 
   return (
     <div>
-      <Title title="popular movies this week" />
+      <Title title="popular films this week" />
       {loading && (
         <LoadingList
           quantity={4}
