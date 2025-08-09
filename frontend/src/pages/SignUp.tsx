@@ -61,10 +61,10 @@ export default function SignUp() {
     <div className="font-google flex justify-center items-center h-screen">
       <div className="w-120 p-6 shadow-lg rounded-lg bg-base-200">
         {/* title and avatar */}
-        <div className="flex items-center justify-between gap-4">
+        <div className="flex items-center justify-between">
           <div>
             <h1 className="text-md">FilmBoxd</h1>
-            <h1 className="text-2xl font-bold">SignUp</h1>
+            <h1 className="text-3xl font-bold">SignUp</h1>
           </div>
 
           {/* avatar display */}

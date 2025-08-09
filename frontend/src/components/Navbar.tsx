@@ -1,7 +1,35 @@
 // import { FaSun, FaMoon } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { authClient } from "../lib/auth-client";
+
+import type { User } from "../types";
 
 export default function Navbar() {
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    async function fetchUser() {
+      const sessionResponse = await authClient.getSession();
+
+      if ("data" in sessionResponse && sessionResponse.data) {
+        setUser(sessionResponse.data.user || null);
+      } else {
+        setUser(null);
+      }
+      setLoading(false);
+    }
+    fetchUser();
+  }, []);
+
+  const handleSignOut = async () => {
+    await authClient.signOut();
+    setUser(null);
+    navigate("/");
+  };
+
   return (
     <div className="p-4 font-google font-bold flex justify-between bg-transparent w-[1200px] mx-auto">
       <div className="text-3xl w-1/2">
@@ -15,7 +43,7 @@ export default function Navbar() {
           Home
         </Link>
 
-        {/* search */}
+        {/* Search */}
         <label className="input">
           <svg
             className="h-[1em] opacity-50"
@@ -36,11 +64,55 @@ export default function Navbar() {
           <input type="search" className="grow" placeholder="Search" />
         </label>
 
-        {/* log in and sign up buttons */}
-        <div className="flex items-end">
-          <button className="btn btn-soft">Log In</button>
-          <div className="divider divider-horizontal"></div>
-          <button className="btn btn-soft">Sign Up</button>
+        {/* User area */}
+        <div className="flex items-center gap-4">
+          {loading ? null : user ? (
+            <div className="dropdown dropdown-hover dropdown-end">
+              <div tabIndex={0} role="button" className="cursor-pointer">
+                {user.image ? (
+                  <div className="avatar w-10 h-10 rounded-full overflow-hidden border-2 border-accent">
+                    <img src={user.image} alt="User Avatar" />
+                  </div>
+                ) : (
+                  <div className="avatar avatar-placeholder w-10 h-10">
+                    <div className="bg-neutral text-neutral-content w-10 h-10 rounded-full flex items-center justify-center">
+                      <span className="text-xl">
+                        {user.name.charAt(0).toUpperCase()}
+                      </span>
+                    </div>
+                  </div>
+                )}
+              </div>
+              <ul
+                tabIndex={0}
+                className="dropdown-content menu bg-base-200 rounded-box z-10 w-32 p-2 shadow-md"
+              >
+                <li>
+                  <Link to="/profile">
+                    <div className="p-1">Profile</div>
+                  </Link>
+                </li>
+                <li>
+                  <button
+                    onClick={handleSignOut}
+                    className="btn bg-red-500 hover:bg-red-600 font-bold"
+                  >
+                    Sign Out
+                  </button>
+                </li>
+              </ul>
+            </div>
+          ) : (
+            <>
+              <Link to="/login" className="btn btn-soft cursor-pointer">
+                <button>Log In</button>
+              </Link>
+              <div className="divider divider-horizontal"></div>
+              <Link to="/signup" className="btn btn-soft cursor-pointer">
+                <button>Sign Up</button>
+              </Link>
+            </>
+          )}
         </div>
       </div>
     </div>
