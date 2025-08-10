@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { GoUnlink } from "react-icons/go";
 
 interface SmallPosterProps {
   movie_id: number;
@@ -21,12 +22,18 @@ export default function SmallPoster({
             {movie_title} ({release_date.slice(0, 4)})
           </div>
         </div>
-        <img
-          src={`https://image.tmdb.org/t/p/w342${poster_path}`}
-          alt={movie_title}
-          className="font-google rounded shadow w-[70px] h-[105px] border-2 border-transparent hover:border-green-500 transition-colors duration-300"
-          loading="lazy"
-        />
+        {poster_path ? (
+          <img
+            src={`https://image.tmdb.org/t/p/w342${poster_path}`}
+            alt={movie_title}
+            className="font-google rounded shadow w-[70px] h-[105px] border-2 border-transparent hover:border-green-500 transition-colors duration-300"
+            loading="lazy"
+          />
+        ) : (
+          <div className="font-google rounded bg-neutral w-[70px] h-[105px] border-2 border-transparent hover:border-green-500 transition-colors duration-300 flex justify-center items-center text-2xl font-bold">
+            <GoUnlink />
+          </div>
+        )}
       </div>
     </Link>
   );

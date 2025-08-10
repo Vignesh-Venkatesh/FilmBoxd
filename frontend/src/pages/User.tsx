@@ -1,7 +1,7 @@
 import Navbar from "../components/Navbar";
 import UserInfo from "../components/Misc/UserInfo";
 import UserSideBar from "../components/UserSidebar";
-import UserWatched from "../components/User/UserWatched";
+import UserRecent from "../components/User/UserRecent";
 
 export default function User() {
   return (
@@ -11,7 +11,14 @@ export default function User() {
         <UserInfo />
 
         <div className="flex mt-6 justify-between">
-          <UserWatched />
+          <div className="flex flex-col gap-6">
+            {/* recently watched */}
+            <UserRecent list="watched" title="watched" />
+            {/* recently favorited */}
+            <UserRecent list="favorites" title="favorited" />
+            {/* recently watchlisted */}
+            <UserRecent list="watchlist" title="watchlisted" />
+          </div>
           <UserSideBar />
         </div>
       </div>

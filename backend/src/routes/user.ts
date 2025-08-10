@@ -14,6 +14,7 @@ import {
   addFavorite,
   removeFavorite,
 } from "../db/userDBUtils";
+import { getMovieById } from "../lib/tmdb";
 
 import { authMiddleware } from "../middleware/auth.middleware";
 
@@ -95,6 +96,12 @@ userRoutes.post("/:username/watched", authMiddleware, async (c) => {
     return c.json({ msg: "TMDB ID is required", status: 400 }, 400);
   }
 
+  // checking if tmdb id is valid
+  const result = await getMovieById(tmdbId);
+  if (result.error) {
+    return c.json({ error: "Movie id is invalid", status: 400 }, 400);
+  }
+
   // adding watched movie into the database
   try {
     const added = await addWatched(user.id, tmdbId);
@@ -139,6 +146,12 @@ userRoutes.delete("/:username/watched", authMiddleware, async (c) => {
   // if no TMDB id is sent in the body of the request
   if (!tmdbId) {
     return c.json({ msg: "TMDB ID is required", status: 400 }, 400);
+  }
+
+  // checking if tmdb id is valid
+  const result = await getMovieById(tmdbId);
+  if (result.error) {
+    return c.json({ error: "Movie id is invalid", status: 400 }, 400);
   }
 
   // removing watched movie from the database
@@ -237,6 +250,12 @@ userRoutes.post("/:username/watchlist", authMiddleware, async (c) => {
     return c.json({ msg: "TMDB ID is required", status: 400 }, 400);
   }
 
+  // checking if tmdb id is valid
+  const result = await getMovieById(tmdbId);
+  if (result.error) {
+    return c.json({ error: "Movie id is invalid", status: 400 }, 400);
+  }
+
   // adding movie to watchlist in the database
   try {
     const added = await addWatchlisted(user.id, tmdbId);
@@ -281,6 +300,12 @@ userRoutes.delete("/:username/watchlist", authMiddleware, async (c) => {
   // if no TMDB id is sent in the body of the request
   if (!tmdbId) {
     return c.json({ msg: "TMDB ID is required", status: 400 }, 400);
+  }
+
+  // checking if tmdb id is valid
+  const result = await getMovieById(tmdbId);
+  if (result.error) {
+    return c.json({ error: "Movie id is invalid", status: 400 }, 400);
   }
 
   // removing movie from watchlist in the database
@@ -375,6 +400,12 @@ userRoutes.post("/:username/favorites", authMiddleware, async (c) => {
     return c.json({ msg: "TMDB ID is required", status: 400 }, 400);
   }
 
+  // checking if tmdb id is valid
+  const result = await getMovieById(tmdbId);
+  if (result.error) {
+    return c.json({ error: "Movie id is invalid", status: 400 }, 400);
+  }
+
   // adding movie to favorites in the database
   try {
     const added = await addFavorite(user.id, tmdbId);
@@ -419,6 +450,12 @@ userRoutes.delete("/:username/favorites", authMiddleware, async (c) => {
   // if no TMDB id is sent in the body of the request
   if (!tmdbId) {
     return c.json({ msg: "TMDB ID is required", status: 400 }, 400);
+  }
+
+  // checking if tmdb id is valid
+  const result = await getMovieById(tmdbId);
+  if (result.error) {
+    return c.json({ error: "Movie id is invalid", status: 400 }, 400);
   }
 
   // removing movie from favorites in the database
