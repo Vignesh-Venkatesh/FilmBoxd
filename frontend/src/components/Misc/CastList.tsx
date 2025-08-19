@@ -25,7 +25,6 @@ export default function CastList() {
       } catch (err: any) {
         setError(err.message);
       } finally {
-        console.log(cast);
         setLoading(false);
       }
     }

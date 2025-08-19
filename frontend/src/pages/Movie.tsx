@@ -6,8 +6,10 @@ import CastList from "../components/Misc/CastList";
 import LoadingMovie from "../components/Loading/LoadingMovie";
 import ActionButtons from "../components/Reviews/ActionButtons";
 
-import type { Movie } from "../types";
+import type { Movie, User } from "../types";
 import { isFutureDate } from "../config/utils";
+
+import { authClient } from "../lib/auth-client";
 
 const URL: string = import.meta.env.VITE_API_URL;
 
@@ -16,6 +18,7 @@ export default function Movie() {
   const [movie, setMovie] = useState<Movie | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [user, setUser] = useState<User | null>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -42,6 +45,20 @@ export default function Movie() {
 
     fetchMovie();
   }, [id]);
+
+  // fetch current user from better auth
+  useEffect(() => {
+    async function fetchUser() {
+      const sessionResponse = await authClient.getSession();
+
+      if ("data" in sessionResponse && sessionResponse.data) {
+        setUser(sessionResponse.data.user || null);
+      } else {
+        setUser(null);
+      }
+    }
+    fetchUser();
+  }, []);
 
   return (
     <div className="relative">
@@ -109,7 +126,7 @@ export default function Movie() {
                 </div>
 
                 {/* rating */}
-                <ActionButtons />
+                {user && <ActionButtons username={user.name} tmdbId={id!} />}
               </div>
             </div>
           </div>

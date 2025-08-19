@@ -21,7 +21,7 @@ export default function Home() {
         <div className="flex mt-6 justify-between">
           <div className="flex flex-col gap-4">
             {/* recently watched films */}
-            {/* <HomeRecent list="watched" title="watched" /> */}
+            <HomeRecent list="watched" title="watched" />
             {/* recently favorited films */}
             <HomeRecent list="favorites" title="favorited" />
             {/* recently watchlisted films */}
