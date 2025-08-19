@@ -73,6 +73,24 @@ export async function getUserAverageRating(
 
 // ================== WATCHED ====================
 
+// checking if movie is watched by user
+export async function checkIfWatched(
+  user_id: string,
+  tmdb_id: string
+): Promise<boolean> {
+  const res = await query(
+    `
+    SELECT 1
+    FROM watched
+    WHERE user_id = $1 AND tmdb_id = $2
+    LIMIT 1
+  `,
+    [user_id, tmdb_id]
+  );
+
+  return res.rows.length > 0;
+}
+
 // getting watched movies of user
 export async function getUserWatched(
   userId: string,
@@ -126,6 +144,23 @@ export async function removeWatched(userId: string, tmdbId: string) {
 }
 
 // ================== WATCHLISTED ====================
+// checking if movie is watchlisted by user
+export async function checkIfWatchlisted(
+  user_id: string,
+  tmdb_id: string
+): Promise<boolean> {
+  const res = await query(
+    `
+    SELECT 1
+    FROM watchlisted
+    WHERE user_id = $1 AND tmdb_id = $2
+    LIMIT 1
+  `,
+    [user_id, tmdb_id]
+  );
+
+  return res.rows.length > 0;
+}
 
 // getting watchlisted movies of user
 export async function getUserWatchlisted(
@@ -178,6 +213,24 @@ export async function removeWatchlisted(userId: string, tmdbId: string) {
 }
 
 // ================== FAVORITES ======================
+
+// checking if movie is favorited by user
+export async function checkIfFavorited(
+  user_id: string,
+  tmdb_id: string
+): Promise<boolean> {
+  const res = await query(
+    `
+    SELECT 1
+    FROM favorites
+    WHERE user_id = $1 AND tmdb_id = $2
+    LIMIT 1
+  `,
+    [user_id, tmdb_id]
+  );
+
+  return res.rows.length > 0;
+}
 
 // get favorite movies of user
 export async function getUserFavorites(

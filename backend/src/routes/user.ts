@@ -13,6 +13,9 @@ import {
   removeWatchlisted,
   addFavorite,
   removeFavorite,
+  checkIfWatched,
+  checkIfWatchlisted,
+  checkIfFavorited,
 } from "../db/userDBUtils";
 import { getMovieById } from "../lib/tmdb";
 
@@ -39,6 +42,17 @@ userRoutes.get("/:username/watched", async (c) => {
     const user = await getUserInfo(username);
     if (!user) {
       return c.json({ msg: "User not found", status: 404 }, 404);
+    }
+
+    // fetching TMDB id from query param instead of body
+    const tmdbId = c.req.query("tmdbId");
+
+    if (tmdbId) {
+      const watched = await checkIfWatched(user.id, tmdbId);
+      return c.json({
+        watched,
+        status: 200,
+      });
     }
 
     // pagination query params with default values
@@ -189,6 +203,17 @@ userRoutes.get("/:username/watchlist", async (c) => {
     const user = await getUserInfo(username);
     if (!user) {
       return c.json({ msg: "User not found", status: 404 }, 404);
+    }
+
+    // fetching TMDB id from query param instead of body
+    const tmdbId = c.req.query("tmdbId");
+
+    if (tmdbId) {
+      const watchlisted = await checkIfWatchlisted(user.id, tmdbId);
+      return c.json({
+        watchlisted,
+        status: 200,
+      });
     }
 
     // pagination query params with default values
@@ -343,6 +368,17 @@ userRoutes.get("/:username/favorites", async (c) => {
     const user = await getUserInfo(username);
     if (!user) {
       return c.json({ msg: "User not found", status: 404 }, 404);
+    }
+
+    // fetching TMDB id from query param instead of body
+    const tmdbId = c.req.query("tmdbId");
+
+    if (tmdbId) {
+      const favorited = await checkIfFavorited(user.id, tmdbId);
+      return c.json({
+        favorited,
+        status: 200,
+      });
     }
 
     // pagination query params with default values

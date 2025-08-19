@@ -42,7 +42,7 @@ recentRoutes.get("/favorites", async (c) => {
   }
 });
 
-// GET /recent/favorites
+// GET /recent/watchlisted
 recentRoutes.get("/watchlisted", async (c) => {
   try {
     const recentWatchlisted = await getRecentWatchlisted(10);
