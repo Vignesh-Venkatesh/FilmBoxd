@@ -4,6 +4,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import CastList from "../components/Misc/CastList";
 import LoadingMovie from "../components/Loading/LoadingMovie";
+import ActionButtons from "../components/Reviews/ActionButtons";
 
 import type { Movie } from "../types";
 import { isFutureDate } from "../config/utils";
@@ -108,7 +109,7 @@ export default function Movie() {
                 </div>
 
                 {/* rating */}
-                <div className="w-[230px] bg-neutral h-32 rounded"></div>
+                <ActionButtons />
               </div>
             </div>
           </div>

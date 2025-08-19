@@ -4,6 +4,7 @@ import NowPlayingMovies from "../components/NowPlaying";
 import PopularMovies from "../components/PopularMovies";
 import HomeSideBar from "../components/HomeSideBar";
 import PopularReviews from "../components/Reviews/PopularReviews";
+import HomeRecent from "../components/Misc/HomeRecent";
 
 const URL: string = import.meta.env.VITE_API_URL;
 
@@ -18,7 +19,15 @@ export default function Home() {
         <NowPlayingMovies URL={URL} />
 
         <div className="flex mt-6 justify-between">
-          <PopularReviews />
+          <div className="flex flex-col gap-4">
+            {/* recently watched films */}
+            {/* <HomeRecent list="watched" title="watched" /> */}
+            {/* recently favorited films */}
+            <HomeRecent list="favorites" title="favorited" />
+            {/* recently watchlisted films */}
+            <HomeRecent list="watchlisted" title="watchlisted" />
+            <PopularReviews />
+          </div>
           <HomeSideBar URL={URL} />
         </div>
       </div>

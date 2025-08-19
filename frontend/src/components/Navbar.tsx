@@ -8,7 +8,6 @@ import type { User } from "../types";
 export default function Navbar() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchUser() {

@@ -1,5 +1,7 @@
 ## Database Schema
 
+Have to alter `user` table to make name `UNIQUE`
+
 ### Movies
 
 ```sql

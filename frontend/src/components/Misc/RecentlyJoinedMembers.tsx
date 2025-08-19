@@ -6,7 +6,7 @@ import LoadingRecentMembers from "../Loading/LoadingRecentMembers";
 
 import type { UserDB } from "../../types";
 
-const URL: string = `${import.meta.env.VITE_API_URL}/users/recent`;
+const URL: string = `${import.meta.env.VITE_API_URL}/recent/users`;
 
 export default function RecentlyJoinedMembers() {
   const [recentUsers, setRecentUsers] = useState<UserDB[]>([]);

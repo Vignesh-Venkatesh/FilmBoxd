@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
 
 import Title from "../Misc/Title";
 import SmallList from "../List/SmallList";
@@ -9,14 +8,13 @@ import { FaFaceSadCry } from "react-icons/fa6";
 
 const URL: string = import.meta.env.VITE_API_URL;
 
-export default function UserRecent({
+export default function HomeRecent({
   list,
   title,
 }: {
   list: string;
   title: string;
 }) {
-  const { username } = useParams();
   const [movies, setMovies] = useState<Movie[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -24,7 +22,7 @@ export default function UserRecent({
   useEffect(() => {
     async function fetchList() {
       try {
-        const res = await fetch(`${URL}/user/${username}/${list}`);
+        const res = await fetch(`${URL}/recent/${list}`);
         const json = await res.json();
         if (!res.ok) throw new Error(json?.error || "Unknown error");
 
@@ -34,6 +32,7 @@ export default function UserRecent({
           return;
         }
 
+        setMovies([]);
         const movieDetails: Movie[] = await Promise.all(
           slicedList.map(async (item: any) => {
             const mRes = await fetch(`${URL}/movies/${item.tmdb_id}`);
@@ -52,12 +51,12 @@ export default function UserRecent({
       }
     }
 
-    if (username && list) fetchList();
-  }, [username, list]);
+    if (list) fetchList();
+  }, [list]);
 
   return (
     <div className="w-[630px]">
-      <Title title={`recently ${title} films`} more={`/${username}/${list}`} />
+      <Title title={`recently ${title} films`} more={`/recent/${list}`} />
 
       {loading && <p>Loading...</p>}
       {error && <p className="text-red-500">{error}</p>}
@@ -68,11 +67,11 @@ export default function UserRecent({
         <div className="h-[105px] bg-neutral rounded shadow-md w-full flex flex-col gap-2 justify-center items-center">
           <FaFaceSadCry className="text-4xl opacity-80" />
           <p>
-            {username} has not{" "}
+            No recently{" "}
             <span className="underline underline-offset-4 font-bold">
               {title}
             </span>{" "}
-            any films.
+            films.
           </p>
         </div>
       )}
