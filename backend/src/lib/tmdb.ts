@@ -9,8 +9,10 @@ const TMDB_API_KEY = Bun.env.TMDB_API_KEY;
 const BASE_URL = "https://api.themoviedb.org/3";
 
 // function to get searched movie
-export async function getSearchedMovie(movie: string) {
-  const url = `${BASE_URL}/search/movie?query=${movie}`;
+export async function getSearchedMovie(movie: string, page: number = 1) {
+  const url = `${BASE_URL}/search/movie?query=${encodeURIComponent(
+    movie
+  )}&page=${page}`;
 
   try {
     // if fetch is successful
@@ -20,9 +22,10 @@ export async function getSearchedMovie(movie: string) {
         Authorization: `Bearer ${TMDB_API_KEY}`,
       },
     });
+
     return { msg: data, status: 200 };
   } catch (error) {
-    //   if fetch failed
+    // if fetch failed
     return { error: `Failed to fetch searched movie: ${movie}.`, status: 400 };
   }
 }

@@ -6,6 +6,7 @@ import Home from "./pages/Home";
 import Movie from "./pages/Movie";
 import NotFound from "./pages/NotFound";
 import User from "./pages/User";
+import Search from "./pages/Search";
 
 export default function App() {
   return (
@@ -15,6 +16,7 @@ export default function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/movie/:id" element={<Movie />} />
+        <Route path="/search/:film" element={<Search />} />
         <Route path="/user/:username" element={<User />} />
         <Route path="*" element={<NotFound />} /> {/* catch-all */}
       </Routes>

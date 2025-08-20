@@ -8,6 +8,7 @@ import type { User } from "../types";
 export default function Navbar() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -30,6 +31,14 @@ export default function Navbar() {
     navigate("/");
   };
 
+  const handleSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (search.trim()) {
+      navigate(`/search/${search.trim()}`);
+      setSearch("");
+    }
+  };
+
   return (
     <div className="p-4 font-google font-bold flex justify-between bg-transparent w-[1200px] mx-auto">
       <div className="text-3xl w-1/2">
@@ -44,25 +53,33 @@ export default function Navbar() {
         </Link>
 
         {/* Search */}
-        <label className="input">
-          <svg
-            className="h-[1em] opacity-50"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-          >
-            <g
-              strokeLinejoin="round"
-              strokeLinecap="round"
-              strokeWidth="2.5"
-              fill="none"
-              stroke="currentColor"
+        <form onSubmit={handleSearchSubmit}>
+          <label className="input flex items-center gap-2">
+            <svg
+              className="h-[1em] opacity-50"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
             >
-              <circle cx="11" cy="11" r="8"></circle>
-              <path d="m21 21-4.3-4.3"></path>
-            </g>
-          </svg>
-          <input type="search" className="grow" placeholder="Search" />
-        </label>
+              <g
+                strokeLinejoin="round"
+                strokeLinecap="round"
+                strokeWidth="2.5"
+                fill="none"
+                stroke="currentColor"
+              >
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.3-4.3"></path>
+              </g>
+            </svg>
+            <input
+              type="search"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="grow"
+              placeholder="Search"
+            />
+          </label>
+        </form>
 
         {/* User area */}
         <div className="flex items-center gap-4">

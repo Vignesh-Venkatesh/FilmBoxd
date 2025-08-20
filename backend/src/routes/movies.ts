@@ -17,10 +17,13 @@ moviesRoutes.get("/random", async (c) => {
   return c.json({ msg: movie, status: 200 });
 });
 
-// GET /movies/search
+// GET /movies/search?movie=x&page=x
 moviesRoutes.get("/search", async (c) => {
   const movie = c.req.query("movie");
-  const { msg, error, status } = await getSearchedMovie(movie);
+  const page = parseInt(c.req.query("page") || "1");
+
+  const { msg, error, status } = await getSearchedMovie(movie, page);
+
   return c.json(error ? { error, status } : { msg, status }, status);
 });
 
