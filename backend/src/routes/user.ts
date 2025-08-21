@@ -21,7 +21,7 @@ import { getMovieById } from "../lib/tmdb";
 
 import { authMiddleware } from "../middleware/auth.middleware";
 
-const req_limit = 50;
+const req_limit = 96;
 
 export const userRoutes = new Hono();
 

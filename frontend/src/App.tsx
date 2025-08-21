@@ -7,6 +7,9 @@ import Movie from "./pages/Movie";
 import NotFound from "./pages/NotFound";
 import User from "./pages/User";
 import Search from "./pages/Search";
+import Watchlist from "./pages/Watchlist";
+import Favorites from "./pages/Favorites";
+import Watched from "./pages/Watched";
 
 export default function App() {
   return (
@@ -18,6 +21,9 @@ export default function App() {
         <Route path="/movie/:id" element={<Movie />} />
         <Route path="/search/:film" element={<Search />} />
         <Route path="/user/:username" element={<User />} />
+        <Route path="/watchlist/:username" element={<Watchlist />} />
+        <Route path="/watched/:username" element={<Watched />} />
+        <Route path="/favorites/:username" element={<Favorites />} />
         <Route path="*" element={<NotFound />} /> {/* catch-all */}
       </Routes>
     </Router>

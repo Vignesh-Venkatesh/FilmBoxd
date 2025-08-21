@@ -57,7 +57,7 @@ export default function UserRecent({
 
   return (
     <div className="w-[630px]">
-      <Title title={`recently ${title} films`} more={`/${username}/${list}`} />
+      <Title title={`recently ${title} films`} more={`/${list}/${username}`} />
 
       {loading && <p>Loading...</p>}
       {error && <p className="text-red-500">{error}</p>}
