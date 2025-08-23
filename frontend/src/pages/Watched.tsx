@@ -51,7 +51,14 @@ export default function Watched() {
     return (
       <div>
         <Navbar />
-        <div className="w-[950px] mx-auto py-[30px]">Loading...</div>
+
+        <div className="w-[950px] mx-auto py-[30px]">
+          <h1 className="text-lg font-bold">{username}'s Watched Films</h1>
+          <hr className="opacity-50 mt-2 mb-4" />
+          <div className="flex justify-center text-accent">
+            <span className="loading loading-bars loading-xl"></span>
+          </div>
+        </div>
       </div>
     );
   }
@@ -60,7 +67,20 @@ export default function Watched() {
     return (
       <div>
         <Navbar />
-        <div className="w-[950px] mx-auto py-[30px] text-red-500">{error}</div>
+        <div className="w-[950px] mx-auto py-[30px]">
+          <h1 className="text-lg font-bold">{username}'s Watched Films</h1>
+          <hr className="opacity-50 mt-2 mb-4" />
+          <div className="flex justify-center text-accent">
+            <div className="text-red-500">Something went wrong (T-T)</div>
+          </div>
+
+          {/* error toast */}
+          <div className="toast">
+            <div className="alert alert-error">
+              <span>Something went wrong (T-T)</span>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
@@ -71,7 +91,6 @@ export default function Watched() {
       <div className="w-[950px] mx-auto py-[30px]">
         <h1 className="text-lg font-bold">{username}'s Watched Films</h1>
         <hr className="opacity-50 mt-2 mb-4" />
-
         {watched.length === 0 ? (
           <p>No movies in Watched.</p>
         ) : (

@@ -71,6 +71,58 @@ export async function getUserAverageRating(
   };
 }
 
+export async function checkIfReviewed(
+  user_id: string,
+  tmdb_id: string
+): Promise<{ review: Review[] | null; reviewed: boolean }> {
+  const res = await query(
+    `
+    SELECT *
+    FROM reviews
+    WHERE user_id = $1 AND tmdb_id = $2
+    LIMIT 1
+  `,
+    [user_id, tmdb_id]
+  );
+
+  const reviewed = res.rows.length > 0;
+
+  return {
+    review: reviewed ? res.rows : null,
+    reviewed,
+  };
+}
+
+// adding reviewed movie of user
+export async function addReview(
+  userId: string,
+  tmdbId: string,
+  rating: number,
+  reviewText?: string
+) {
+  console.log(userId, tmdbId, rating, reviewText);
+  const res = await query(
+    `
+      INSERT INTO reviews (user_id, tmdb_id, rating, review_text)
+      VALUES ($1, $2, $3, $4)
+      ON CONFLICT (user_id, tmdb_id)
+      DO UPDATE SET rating = EXCLUDED.rating, review_text = EXCLUDED.review_text, updated_at = NOW()
+      RETURNING *;
+      `,
+    [userId, tmdbId, rating ?? null, reviewText ?? null]
+  );
+  return res.rows || null;
+}
+
+// remove reviewed movie of user
+export async function removeReview(userId: string, tmdbId: string) {
+  const res = await query(
+    `DELETE FROM reviews WHERE user_id = $1 AND tmdb_id = $2 RETURNING *`,
+    [userId, tmdbId]
+  );
+  return res.rows[0] || null;
+}
+
 // ================== WATCHED ====================
 
 // checking if movie is watched by user

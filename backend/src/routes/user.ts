@@ -16,6 +16,9 @@ import {
   checkIfWatched,
   checkIfWatchlisted,
   checkIfFavorited,
+  checkIfReviewed,
+  addReview,
+  removeReview,
 } from "../db/userDBUtils";
 import { getMovieById } from "../lib/tmdb";
 
@@ -25,12 +28,171 @@ const req_limit = 96;
 
 export const userRoutes = new Hono();
 
+// ==================== REVIEWS ====================
+// GET /user/:username/reviews
+userRoutes.get("/:username/reviews", async (c) => {
+  try {
+    // getting username from the URL param
+    const username = c.req.param("username");
+
+    // returning error if username is not passed
+    if (!username) {
+      return c.json({ msg: "Username is required", status: 400 }, 400);
+    }
+
+    // fetching user info from the database using the username
+    const user = await getUserInfo(username);
+    if (!user) {
+      return c.json({ msg: "user not found", status: 404 }, 404);
+    }
+
+    // fetching TMDB id from query param instead of body
+    const tmdbId = c.req.query("tmdbId");
+
+    if (tmdbId) {
+      const { reviewed, review } = await checkIfReviewed(user.id, tmdbId);
+      return c.json({
+        reviewed,
+        review,
+        status: 200,
+      });
+    }
+
+    // pagination query params with default values
+    const page = parseInt(c.req.query("page") || "1");
+    const limit = 20; //setting only to show 20 reviews per request for reviews
+    const offset = (page - 1) * limit; // setting page offser
+
+    // getting user's reviewed films
+    const { reviews, total } = await getUserReviews(user.id, limit, offset);
+
+    // returning the data
+    return c.json({
+      data: reviews,
+      pagination: {
+        total,
+        page,
+        limit,
+        totalPages: Math.ceil(total / limit),
+      },
+      status: 200,
+    });
+  } catch (error) {
+    // return error, if there was any with regards to db fetching
+    console.error("Error fetching reviewed movies:", error);
+    return c.json({ msg: "Internal server error", status: 500 }, 500);
+  }
+});
+
+// POST /user/:username/reviews
+userRoutes.post("/:username/reviews", authMiddleware, async (c) => {
+  const user = c.get("user");
+  const username = c.req.param("username");
+
+  // checking if session and URL param info match
+  if (username !== user?.name) {
+    return c.json(
+      { msg: "Forbidden: cannot modify another user's data", status: 403 },
+      403
+    );
+  }
+
+  let body: { tmdbId: string; rating: number; reviewText?: string };
+
+  try {
+    body = await c.req.json();
+  } catch {
+    return c.json({ msg: "Invalid JSON body", status: 400 }, 400);
+  }
+
+  const { tmdbId, rating, reviewText } = body;
+
+  if (!tmdbId) {
+    return c.json({ msg: "TMDB ID is required", status: 400 }, 400);
+  }
+
+  // validate TMDB ID
+  const result = await getMovieById(tmdbId.toString());
+  if (result.error) {
+    return c.json({ error: "Movie id is invalid", status: 400 }, 400);
+  }
+
+  // checking if user has watched the movie
+  // if not, then we return error
+  if (tmdbId) {
+    const watched = await checkIfWatched(user.id, tmdbId);
+    if (!watched) {
+      return c.json({ msg: "Movie is not watched yet", status: 400 }, 400);
+    }
+  }
+
+  // checking if rating is provided
+  // if not, then we return error
+  if (!rating) {
+    return c.json({ msg: "Rating is required", status: 400 }, 400);
+  }
+
+  if (rating > 5 || rating < 0) {
+    return c.json({ msg: "Invalid rating", status: 400 }, 400);
+  }
+
+  // insert review
+  try {
+    const added = await addReview(user.id, tmdbId, rating, reviewText);
+
+    return c.json({ msg: "Review saved", data: added, status: 201 }, 201);
+  } catch (error) {
+    console.error("Error saving review:", error);
+    return c.json({ msg: "Internal server error", status: 500 }, 500);
+  }
+});
+
+// DELETE /user/:username/reviews
+userRoutes.delete("/:username/reviews", authMiddleware, async (c) => {
+  const user = c.get("user");
+  const username = c.req.param("username");
+
+  if (username !== user?.name) {
+    return c.json(
+      { msg: "Forbidden: cannot modify another user's data", status: 403 },
+      403
+    );
+  }
+
+  let body: { tmdbId: string };
+
+  try {
+    body = await c.req.json();
+  } catch {
+    return c.json({ msg: "Invalid JSON body", status: 400 }, 400);
+  }
+
+  const { tmdbId } = body;
+
+  if (!tmdbId) {
+    return c.json({ msg: "TMDB ID is required", status: 400 }, 400);
+  }
+
+  try {
+    const removed = await removeReview(user.id, tmdbId);
+
+    if (removed.rowCount === 0) {
+      return c.json({ msg: "Review not found", status: 404 }, 404);
+    }
+
+    return c.json({ msg: "Review deleted", status: 200 }, 200);
+  } catch (error) {
+    console.error("Error deleting review:", error);
+    return c.json({ msg: "Internal server error", status: 500 }, 500);
+  }
+});
+
 // ==================== WATCHED ====================
 
 // GET /user/:username/watched
 userRoutes.get("/:username/watched", async (c) => {
   try {
-    // getting username form the URL param
+    // getting username from the URL param
     const username = c.req.param("username");
 
     // returning error if username is not passed

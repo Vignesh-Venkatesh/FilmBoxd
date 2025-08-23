@@ -5,6 +5,7 @@ import SmallList from "../List/SmallList";
 import type { Movie } from "../../types";
 
 import { FaFaceSadCry } from "react-icons/fa6";
+import LoadingList from "../Loading/LoadingList";
 
 const URL: string = import.meta.env.VITE_API_URL;
 
@@ -58,7 +59,9 @@ export default function HomeRecent({
     <div className="w-[630px]">
       <Title title={`recently ${title} films`} more={`/recent/${list}`} />
 
-      {loading && <p>Loading...</p>}
+      {loading && (
+        <LoadingList quantity={8} height="105px" width="70px" columns={8} />
+      )}
       {error && <p className="text-red-500">{error}</p>}
       {!loading && !error && movies.length > 0 && (
         <SmallList data={movies} columns={8} />
