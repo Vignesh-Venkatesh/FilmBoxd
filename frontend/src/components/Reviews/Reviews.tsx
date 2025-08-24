@@ -51,6 +51,7 @@ export default function Reviews({ tmdbId }: ReviewsProps) {
         <LoadingList quantity={1} width="950px" height="150px" columns={1} />
       </div>
     );
+
   if (error) return <div>Error: {error}</div>;
 
   return (
@@ -79,27 +80,28 @@ export default function Reviews({ tmdbId }: ReviewsProps) {
                       {review.title}
                     </h1>
 
-                    {/* user avatar */}
-                    <div className="avatar">
-                      <div className="w-12 rounded-full">
-                        <img src={`${review.image}`} alt="" />
+                    {/* user avatar and review info */}
+                    <div className="flex items-center gap-2">
+                      <div className="avatar">
+                        <div className="w-12 rounded-full">
+                          <img src={`${review.image}`} alt={review.name} />
+                        </div>
                       </div>
-                      {/* reviewer and rating */}
-                      <p className="ml-2">
-                        <p>{review.name}</p>
+                      <div className="flex flex-col">
+                        <span className="font-medium">{review.name}</span>
                         <Rating value={review.rating} />
-                      </p>
+                      </div>
                     </div>
                   </div>
                 </div>
 
-                {/* review creationg */}
-                <p className="italic text-sm">
+                {/* review creation date */}
+                <span className="italic text-sm">
                   {review.created_at.slice(0, 10)}
-                  {/* {review.like_count} likes */}
-                </p>
+                </span>
               </div>
-              {/* review */}
+
+              {/* review text */}
               <p className="mt-5">{review.review_text}</p>
             </div>
           ))}

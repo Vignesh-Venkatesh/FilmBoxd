@@ -7,6 +7,7 @@ import {
   FaBookmark,
 } from "react-icons/fa";
 import { useEffect, useState } from "react";
+import ReviewModal from "./ReviewModal";
 
 interface Props {
   username: string;
@@ -19,6 +20,10 @@ export default function ActionButtons({ username, tmdbId }: Props) {
   const [watched, setWatched] = useState(false);
   const [favorited, setFavorited] = useState(false);
   const [watchlisted, setWatchlisted] = useState(false);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [existingReview, setExistingReview] = useState<string | null>(null);
+  const [existingRating, setExistingRating] = useState<number | null>(null);
 
   // check if movie is already watched on mount
   useEffect(() => {
@@ -71,6 +76,30 @@ export default function ActionButtons({ username, tmdbId }: Props) {
     checkFavorited();
     checkWatchlisted();
   }, [username, tmdbId]);
+
+  // fetch existing review if user has watched this movie
+  useEffect(() => {
+    const fetchReview = async () => {
+      try {
+        const res = await fetch(
+          `${URL}/user/${username}/reviews?tmdbId=${tmdbId}`,
+          {
+            method: "GET",
+            credentials: "include",
+          }
+        );
+        const data = await res.json();
+        if (res.ok && data.reviewed) {
+          setExistingReview(data.review[0]?.review_text || "");
+          setExistingRating(data.review[0]?.rating || 0);
+        }
+      } catch (err) {
+        console.error("Error fetching review:", err);
+      }
+    };
+
+    if (watched) fetchReview();
+  }, [username, tmdbId, watched]);
 
   // ================= HANDLE WATCHED =================
   async function handleWatched() {
@@ -201,9 +230,25 @@ export default function ActionButtons({ username, tmdbId }: Props) {
       </div>
 
       <div className="mt-4">
-        <button className="btn btn-primary w-full" disabled={!watched}>
-          Write a review
+        <button
+          className="btn btn-primary w-full"
+          disabled={!watched}
+          onClick={() => setIsModalOpen(true)}
+        >
+          {existingReview ? "Edit your review" : "Write a review"}
         </button>
+
+        <ReviewModal
+          isOpen={isModalOpen}
+          onClose={() => {
+            setIsModalOpen(false);
+            window.location.reload();
+          }}
+          tmdbId={tmdbId}
+          username={username}
+          initialReview={existingReview ?? ""}
+          initialRating={existingRating ?? 0}
+        />
       </div>
     </div>
   );
