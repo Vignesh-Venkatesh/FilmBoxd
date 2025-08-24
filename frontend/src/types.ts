@@ -27,3 +27,17 @@ export interface UserDB {
   updatedAt: string;
   image?: string | null;
 }
+
+export type Review = {
+  id: number;
+  name: string;
+  image?: string | null;
+  tmdb_id: number;
+  rating: number;
+  review_text: string | null;
+  created_at: string;
+  updated_at: string;
+  like_count: number;
+  title: string;
+  poster_path: string;
+};

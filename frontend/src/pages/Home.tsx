@@ -3,8 +3,9 @@ import Navbar from "../components/Navbar";
 import NowPlayingMovies from "../components/NowPlaying";
 import PopularMovies from "../components/PopularMovies";
 import HomeSideBar from "../components/HomeSideBar";
-import PopularReviews from "../components/Reviews/PopularReviews";
+// import PopularReviews from "../components/Reviews/PopularReviews";
 import HomeRecent from "../components/Misc/HomeRecent";
+import Reviews from "../components/Reviews/Reviews";
 
 const URL: string = import.meta.env.VITE_API_URL;
 
@@ -26,7 +27,11 @@ export default function Home() {
             <HomeRecent list="favorites" title="favorited" />
             {/* recently watchlisted films */}
             <HomeRecent list="watchlisted" title="watchlisted" />
-            <PopularReviews />
+            {/* <PopularReviews /> */}
+
+            <div className="w-[630px]">
+              <Reviews />
+            </div>
           </div>
           <HomeSideBar URL={URL} />
         </div>

@@ -5,7 +5,7 @@ interface SmallPosterProps {
   movie_id: number;
   poster_path: string;
   movie_title: string;
-  release_date: string;
+  release_date?: string;
 }
 
 export default function SmallPoster({
@@ -19,7 +19,7 @@ export default function SmallPoster({
       <div className="tooltip tooltip-bottom cursor-pointer">
         <div className="tooltip-content font-google">
           <div className="text-md">
-            {movie_title} ({release_date.slice(0, 4)})
+            {movie_title} {release_date ? `(${release_date.slice(0, 4)})` : ""}
           </div>
         </div>
         {poster_path ? (

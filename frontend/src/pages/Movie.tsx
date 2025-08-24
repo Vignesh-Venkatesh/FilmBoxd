@@ -5,6 +5,7 @@ import Navbar from "../components/Navbar";
 import CastList from "../components/Misc/CastList";
 import LoadingMovie from "../components/Loading/LoadingMovie";
 import ActionButtons from "../components/Reviews/ActionButtons";
+import Reviews from "../components/Reviews/Reviews";
 
 import type { Movie, User } from "../types";
 import { isFutureDate } from "../config/utils";
@@ -86,49 +87,54 @@ export default function Movie() {
         {error && <p className="text-red-500">{error}</p>}
 
         {movie && (
-          <div className="w-[950px] mx-auto translate-y-100 flex justify-between">
-            {/* poster */}
-            <div className="w-[230px] relative">
-              <img
-                src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                alt={movie.title}
-                className="rounded shadow-2xl border-1 border-gray-800"
-                loading="lazy"
-              />
-              <div className="absolute top-0 right-0 px-2 py-1 rounded-md bg-base-300 text-neutral-content text-sm m-1 shadow-2xl font-bold font-google">
-                {isFutureDate(movie.release_date) ? (
-                  <h1>To Be Released</h1>
-                ) : (
-                  <></>
-                )}
-              </div>
-            </div>
-
-            {/* title, overview, cast, rating */}
-            <div className="w-[670px]">
-              {/* movie title */}
-              <div className="flex gap-3 items-end">
-                <h1 className="text-5xl font-black font-cormorant">
-                  {movie.title}
-                </h1>
-                <h1 className="italic text-2xl font-cormorant">
-                  {movie.release_date.slice(0, 4)}
-                </h1>
+          <div className="w-[950px] mx-auto translate-y-100 ">
+            <div className="flex justify-between">
+              {/* poster */}
+              <div className="w-[230px] relative">
+                <img
+                  src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                  alt={movie.title}
+                  className="rounded shadow-2xl border-1 border-gray-800"
+                  loading="lazy"
+                />
+                <div className="absolute top-0 right-0 px-2 py-1 rounded-md bg-base-300 text-neutral-content text-sm m-1 shadow-2xl font-bold font-google">
+                  {isFutureDate(movie.release_date) ? (
+                    <h1>To Be Released</h1>
+                  ) : (
+                    <></>
+                  )}
+                </div>
               </div>
 
-              {/* overview, cast, rating */}
-              <div className="flex justify-between mt-5">
-                {/* overview, cast */}
-                <div className="w-[390px]">
-                  <p className="font-cormorant text-xl">{movie.overview}</p>
-
-                  <CastList />
+              {/* title, overview, cast, rating */}
+              <div className="w-[670px]">
+                {/* movie title */}
+                <div className="flex gap-3 items-end">
+                  <h1 className="text-5xl font-black font-cormorant">
+                    {movie.title}
+                  </h1>
+                  <h1 className="italic text-2xl font-cormorant">
+                    {movie.release_date.slice(0, 4)}
+                  </h1>
                 </div>
 
-                {/* rating */}
-                {user && <ActionButtons username={user.name} tmdbId={id!} />}
+                {/* overview, cast, rating */}
+                <div className="flex justify-between mt-5">
+                  {/* overview, cast */}
+                  <div className="w-[390px]">
+                    <p className="font-cormorant text-xl">{movie.overview}</p>
+
+                    <CastList />
+                  </div>
+
+                  {/* rating */}
+                  {user && <ActionButtons username={user.name} tmdbId={id!} />}
+                </div>
               </div>
             </div>
+
+            {/* reviews */}
+            <Reviews tmdbId={id} />
           </div>
         )}
       </div>
